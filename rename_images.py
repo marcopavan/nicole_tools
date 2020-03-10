@@ -29,8 +29,8 @@ elif args.i:
 	for f in args.i:
 		i+=1
 		file_ext = f.split(".")[-1]
-		file_path = f.rsplit(os.sep, 1)[1]
 		path, file = os.path.split(f)
+		print(file)
 		newname = str(i)+"."+file_ext
 		if args.n:
 			newname = args.n+"_"+newname
