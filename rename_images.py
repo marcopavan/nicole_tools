@@ -10,29 +10,24 @@ args = parser.parse_args()
 
 if args.p:
 	files = sorted([f for f in os.listdir(args.p) if ".jpg" in f or ".JPG" in f or ".png" in f])
-	print("Trovate "+str(len(files))+" immagini.")
-
-	i=0
-	for f in files:
-		i+=1
-		file_ext = f.split(".")[-1]
-		newname = str(i)+"."+file_ext
-		if args.n:
-			newname = args.n+"_"+newname
-		os.rename(args.p+os.sep+f, args.p+os.sep+newname)
-	print("Rinominate "+str(i)+" immagini.")
-
 elif args.i:
-	print("Trovate "+str(len(args.i))+" immagini.")
+	files= args.i
+print("Trovate "+str(len(files))+" immagini.")
 
-	i=0
-	for f in args.i:
-		i+=1
-		file_ext = f.split(".")[-1]
-		path, file = os.path.split(f)
-		print(file)
-		newname = str(i)+"."+file_ext
-		if args.n:
-			newname = args.n+"_"+newname
-		os.rename(f, path+os.sep+newname)
-	print("Rinominate "+str(i)+" immagini.")
+i=0
+for f in files:
+	i+=1
+
+	if args.p:
+		path = args.p
+		file_name = f
+	elif args.i:
+		path, file_name = os.path.split(f)
+
+	file_ext = file_name.split(".")[-1]
+	new_file_name = str(i)+"."+file_ext
+	if args.n:
+		new_file_name = args.n+"_"+new_file_name
+	os.rename(path+os.sep+file_name, path+os.sep+new_file_name)
+
+print("Rinominate "+str(i)+" immagini.")
