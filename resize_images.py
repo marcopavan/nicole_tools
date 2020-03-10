@@ -16,21 +16,39 @@ def resize_img_pil(img_pil, new_width):
 # Main
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-p', type=str, required=True)
+parser.add_argument('-p', help='Insert folder path', type=str, required=False)
+parser.add_argument('-i', help='Insert images', type=str, required=False, nargs="+")
 parser.add_argument('-w', type=str, required=True)
 args = parser.parse_args()
 
-dataset_path = args.p
-resized_dataset_path = dataset_path+"_RESIZED"
+if args.p:
+	dataset_path = args.p
+	resized_dataset_path = dataset_path+"_RESIZED"
 
-if os.path.exists(resized_dataset_path):
-	shutil.rmtree(resized_dataset_path)
+	if os.path.exists(resized_dataset_path):
+		shutil.rmtree(resized_dataset_path)
 
-os.makedirs(resized_dataset_path)
-os.chmod(resized_dataset_path, 0o775)
+	os.makedirs(resized_dataset_path)
+	os.chmod(resized_dataset_path, 0o775)
 
-listing = [f for f in os.listdir(dataset_path) if ".jpg" in f or ".png" in f]
-for img in listing:
-	img_pil = Image.open(dataset_path+os.sep+img)
+	listing = [f for f in os.listdir(dataset_path) if ".jpg" in f or ".png" in f]
+elif args.i:
+	listing = args.i
+
+for f in listing:
+	if args.p:
+		path = args.p
+		file_name = f
+	elif args.i:
+		path, file_name = os.path.split(f)
+
+	img_pil = Image.open(path+os.sep+file_name)
 	resized_img_pil = resize_img_pil(img_pil, int(args.w))
-	resized_img_pil.save(resized_dataset_path+os.sep+img)
+
+	if args.p:
+		destination_path = resized_dataset_path
+	elif args.i:
+		destination_path = path
+		file_name = "RESIZED_w"+args.w+"_"+file_name
+	resized_img_pil.save(destination_path+os.sep+file_name)
+
