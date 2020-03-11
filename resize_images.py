@@ -35,7 +35,12 @@ if args.p:
 elif args.i:
 	listing = args.i
 
+print("Trovate "+str(len(listing))+" immagini.")
+
+i=0
 for f in listing:
+	i+=1
+	
 	if args.p:
 		path = args.p
 		file_name = f
@@ -52,3 +57,4 @@ for f in listing:
 		file_name = "RESIZED_w"+args.w+"_"+file_name
 	resized_img_pil.save(destination_path+os.sep+file_name)
 
+print("Rinominate "+str(i)+" immagini.")
